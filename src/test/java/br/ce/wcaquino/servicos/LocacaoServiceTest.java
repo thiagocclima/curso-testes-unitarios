@@ -9,6 +9,10 @@ import static org.junit.Assert.fail;
 
 import java.util.Date;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -22,16 +26,32 @@ import br.ce.wcaquino.exceptions.LocadoraException;
 
 public class LocacaoServiceTest {
 	
+	private LocacaoService service;
+	
+	private static int cont = 0;
+	
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 	
+	@BeforeClass
+	public static void setupClass() {
+		System.out.println("Before class");
+	}
+	
+	@Before
+	public void setup() {
+		System.out.println("Before");
+		service = new LocacaoService();
+		++cont;
+		System.out.println(cont);
+	}
+	
 	@Test
 	public void testeLocacao() throws Exception {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Thiago");
 		Filme filme = new Filme("Onde os fracos não tem vez", 2, 8.0);
 		
@@ -50,7 +70,6 @@ public class LocacaoServiceTest {
 	@Test(expected = FilmeSemEstoqueException.class)
 	public void testeLocacao_filmeSemEstoque() throws LocadoraException, FilmeSemEstoqueException {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Thiago");
 		Filme filme = new Filme("Onde os fracos não tem vez", 0, 8.0);
 		
@@ -64,7 +83,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void testeLocacao_filmeSemEstoque_2() {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Thiago");
 		Filme filme = new Filme("Onde os fracos não tem vez", 0, 8.0);
 		
@@ -85,7 +103,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void testeLocacao_filmeSemEstoque_3() throws LocadoraException, FilmeSemEstoqueException {
 		// Cenário
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Thiago");
 		Filme filme = new Filme("Onde os fracos não tem vez", 0, 8.0);
 		
@@ -98,7 +115,6 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void testeLocacao_usuarioVazio() {
-		LocacaoService service = new LocacaoService();
 		Filme filme = new Filme("Filme 2", 0, 4.0);
 		
 		try {
@@ -113,13 +129,22 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void testeLocacao_filmeVazio() throws LocadoraException, FilmeSemEstoqueException {
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Thiago");
 		
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Filme vazio");
 		
 		service.alugarFilme(usuario, null);
+	}
+	
+	@After
+	public void tearDown() {
+		System.out.println("After");
+	}
+	
+	@AfterClass
+	public static void tearDownClass() {
+		System.out.println("After class");
 	}
 
 }
