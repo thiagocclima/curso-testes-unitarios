@@ -14,7 +14,8 @@ import br.ce.wcaquino.exceptions.LocadoraException;
 
 public class LocacaoService {
 	
-	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws LocadoraException, FilmeSemEstoqueException  {
+	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) 
+			throws LocadoraException, FilmeSemEstoqueException  {
 		if (usuario == null) {
 			throw new LocadoraException("Usuário vazio");
 		}
