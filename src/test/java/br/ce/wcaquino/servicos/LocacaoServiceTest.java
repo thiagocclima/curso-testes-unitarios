@@ -16,7 +16,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -45,6 +47,8 @@ public class LocacaoServiceTest {
 	
 	@Test
 	public void testeLocacao() throws Exception {
+		Assume.assumeFalse( verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
 		// Cenário
 		Usuario usuario = new Usuario("Thiago");
 		List<Filme> filmes = Arrays.asList(new Filme("Onde os fracos não tem vez", 2, 8.0));
@@ -202,7 +206,13 @@ public class LocacaoServiceTest {
 	}
 	
 	@Test
+	//@Ignore //pula o teste independente da situação. Exibe o teste como executado
 	public void deveDevolverNaSegundaLocacaoFeitaNoSabado() throws LocadoraException, FilmeSemEstoqueException {
+
+		// O Assume faz com que o teste seja executado somente aos sábados, 
+		// garantindo que poderá ser executado com sucesso
+		Assume.assumeTrue( verificarDiaSemana(new Date(), Calendar.SATURDAY));
+		
 		//cenário
 		Usuario usuario = new Usuario("Thiago");
 		List<Filme> filmes = new ArrayList<>();
