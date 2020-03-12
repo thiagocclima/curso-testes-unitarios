@@ -29,6 +29,8 @@ public class LocacaoService {
 		for (int i = 0; i < filmes.size(); i++) {
 			if (i > 1 && i < 6) {
 				desconto += 0.25;
+			} else {
+				desconto = 0d;
 			}
 			
 			valorTotal += filmes.get(i).getPrecoLocacao() - (filmes.get(i).getPrecoLocacao() * desconto);
