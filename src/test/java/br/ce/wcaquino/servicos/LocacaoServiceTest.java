@@ -1,12 +1,13 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.matchers.DateMatchers.caiEm;
+import static br.ce.wcaquino.matchers.DateMatchers.isMonday;
 import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.verificarDiaSemana;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
+import br.ce.wcaquino.matchers.DiaSemanaMatcher;
 
 public class LocacaoServiceTest {
 	
@@ -149,8 +151,10 @@ public class LocacaoServiceTest {
 		//ação
 		Locacao locacao = service.alugarFilme(usuario, filmes);
 		
-		//verificação
-		assertTrue( verificarDiaSemana(locacao.getDataRetorno(), Calendar.MONDAY) );
+		//verificação - as tres formas abaixo testam o mesmo matcher
+		assertThat( locacao.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
+		assertThat( locacao.getDataRetorno(), caiEm(Calendar.MONDAY));
+		assertThat( locacao.getDataRetorno(), isMonday());
 	}
 	
 }
