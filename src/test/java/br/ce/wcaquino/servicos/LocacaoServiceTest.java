@@ -1,9 +1,9 @@
 package br.ce.wcaquino.servicos;
 
 import static br.ce.wcaquino.matchers.DateMatchers.caiEm;
+import static br.ce.wcaquino.matchers.DateMatchers.ehHoje;
+import static br.ce.wcaquino.matchers.DateMatchers.ehHojeComDiferencaDeDias;
 import static br.ce.wcaquino.matchers.DateMatchers.isMonday;
-import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
-import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.verificarDiaSemana;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -46,7 +46,7 @@ public class LocacaoServiceTest {
 	}
 	
 	@Test
-	public void testeLocacao() throws Exception {
+	public void deveRealizarLocacao() throws Exception {
 		Assume.assumeFalse( verificarDiaSemana(new Date(), Calendar.SATURDAY));
 		
 		// Cenário
@@ -57,9 +57,13 @@ public class LocacaoServiceTest {
 		Locacao locacao = service.alugarFilme(usuario, filmes);
 
 		// Verificação
-		error.checkThat(locacao.getValor(), is( equalTo(8.0) ) );
-		error.checkThat(isMesmaData(new Date(), locacao.getDataLocacao()), is(true));		
-		error.checkThat(isMesmaData(adicionarDias(new Date(), 1), locacao.getDataRetorno()), is(true));
+		error.checkThat( locacao.getValor(), is( equalTo(8.0) ) );
+
+//		error.checkThat(isMesmaData(new Date(), locacao.getDataLocacao()), is(true));
+		error.checkThat( locacao.getDataLocacao(), ehHoje());
+
+//		error.checkThat(isMesmaData(adicionarDias(new Date(), 1), locacao.getDataRetorno()), is(true));
+		error.checkThat( locacao.getDataRetorno(), ehHojeComDiferencaDeDias(1));
 	}
 	
 	/*
